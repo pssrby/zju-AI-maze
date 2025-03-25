@@ -92,6 +92,9 @@ class BaseSearch:
                 Note:
                     可参考课程note中的代码。
                 """
+                self.explored.append(node)
+                for new_node, new_node_cost in zip(*self.expand(node)):
+                    self.process_new_node(node, new_node, new_node_cost)
 
     def expand(self, node):
         """
