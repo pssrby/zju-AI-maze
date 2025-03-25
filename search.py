@@ -106,11 +106,11 @@ class BaseSearch:
         for action, action_cost in zip(self.actions, self.actions_costs):  # 按顺序执行动作，获取新节点的位置
             new_row = node[0] + action[0]
             new_col = node[1] + action[1]
-            new_node_cost = '+_+'
+            new_node_cost = self.path_cost[node] + action_cost
             if self.check_row_col(new_row, new_col):  # 如果位置合法则加入新节点集合
                 new_node = (new_row, new_col)
                 new_nodes.append(new_node)
-                new_nodes_costs.append('=_=')
+                new_nodes_costs.append(new_node_cost)
             """
             TODO 3:
                 请用合理的表达式替换上面代码段中的'+_+'和'=_='，
