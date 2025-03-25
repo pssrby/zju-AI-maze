@@ -160,6 +160,7 @@ class BaseSearch:
         if self.find_solution:
             print('Find solution! Total cost: {}.'.format(self.path_cost[self.final_goal_node]))  # 找到可行路径并输出其路径代价
             self.backtrack()  # 从目标节点开始回溯路径上的节点
+            print('Total length:{}.'.format(len(self.path)))
             self.print_solution()  # 输出具体路径
             self.draw_solution()  # 可视化迷宫问题的解
         else:
