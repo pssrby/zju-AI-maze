@@ -266,7 +266,7 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
                 self.find_solution = True
                 self.final_goal_node = node
                 return
-            elif 'x_x':  # 达到深度限制后不再扩展节点
+            elif self.depth[node] <= depth_limit:  # 达到深度限制后不再扩展节点
                 """
                 TODO 6:
                     请在此处编写合理的代码段，并在上一行的'x_x'处填入正确的代码。
@@ -274,6 +274,9 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
                 Note:
                     可参考课程note中的代码。
                 """
+                self.explored.append(node)
+                for new_node, new_node_cost in zip(*self.expand(node)):
+                    self.process_new_node(node, new_node, new_node_cost)
 
     def solve(self):
         """外层循环：逐渐增大深度限制搜索"""
