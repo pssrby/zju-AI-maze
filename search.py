@@ -67,6 +67,7 @@ class BaseSearch:
         测试是否到达目标节点
         :param node: 需要进行测试的节点
         """
+        return node in self.goal_node
         """
         TODO 1:
             请编写合理的代码段。
