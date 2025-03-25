@@ -316,6 +316,10 @@ class UniformCostSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
+        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+            self.frontier.push(new_node, new_node_cost)
+            self.came_from[new_node] = node
+            self.path_cost[new_node] = new_node_cost
 
 
 class AStarSearch(BaseSearch):
