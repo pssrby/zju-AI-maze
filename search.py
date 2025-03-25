@@ -347,6 +347,10 @@ class AStarSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.astar_cost。
         """
+        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+            self.frontier.push(new_node, new_node_cost + self.heuristic_func(new_node))
+            self.came_from[new_node] = node
+            self.path_cost[new_node] = new_node_cost
 
     def heuristic_func(self, node):
         """
@@ -360,4 +364,7 @@ class AStarSearch(BaseSearch):
         Note:
             可以在不考虑障碍物的情况下计算代价。
         """
+        return min([self.manhattan(node, goal_node) for goal_node in self.goal_node])
 
+    def manhattan(self, node, goal_node):
+        return abs(node[0] - goal_node[0]) + abs(node[1] - goal_node[1])
