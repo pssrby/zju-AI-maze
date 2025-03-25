@@ -254,6 +254,11 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.depth。
         """
+        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+            self.frontier.push(new_node)
+            self.came_from[new_node] = node
+            self.path_cost[new_node] = new_node_cost
+            self.depth[new_node] = self.depth[node] + 1
 
     def plain_solve(self, depth_limit):
         """
