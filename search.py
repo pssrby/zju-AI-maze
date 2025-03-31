@@ -373,8 +373,24 @@ class AStarSearch(BaseSearch):
         Note:
             可以在不考虑障碍物的情况下计算代价。
         """
-        # 用曼哈顿距离作为启发函数
-        return min([self.manhattan(node, goal_node) for goal_node in self.goal_node])
+        # 由于上下左右代价不同，使用加权重的曼哈顿距离作为启发函数
+        return min([self.weigh_manhattan(node, goal_node) for goal_node in self.goal_node])
 
     def manhattan(self, node, goal_node):
         return abs(node[0] - goal_node[0]) + abs(node[1] - goal_node[1])
+    
+    def weigh_manhattan(self, node, goal_node):
+        vertical_distance = goal_node[0] - node[0]
+        horizon_distance = goal_node[1] - node[1]
+        weigh_distance = 0
+        if vertical_distance > 0:
+            weigh_distance += vertical_distance * 1
+        else:
+            weigh_distance += vertical_distance * -2
+        
+        if horizon_distance > 0:
+            weigh_distance += horizon_distance * 5
+        else:
+            weigh_distance += horizon_distance * -3
+
+        return weigh_distance
