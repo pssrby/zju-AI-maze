@@ -67,7 +67,7 @@ class BaseSearch:
         测试是否到达目标节点
         :param node: 需要进行测试的节点
         """
-        return node in self.goal_node
+        return node in self.goal_node # 如果node在self.goal_node中则返回True
         """
         TODO 1:
             请编写合理的代码段。
@@ -92,8 +92,8 @@ class BaseSearch:
                 Note:
                     可参考课程note中的代码。
                 """
-                self.explored.append(node)
-                for new_node, new_node_cost in zip(*self.expand(node)):
+                self.explored.append(node) # 将当前节点加入到已探索的列表中，并扩展该节点
+                for new_node, new_node_cost in zip(*self.expand(node)): # 对每个扩展出来的节点进行处理
                     self.process_new_node(node, new_node, new_node_cost)
 
     def expand(self, node):
@@ -150,10 +150,10 @@ class BaseSearch:
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]: # 若节点没有被探索过，或者新的代价比较小，则将节点加入前沿集合
             self.frontier.push(new_node)
-            self.came_from[new_node] = node
-            self.path_cost[new_node] = new_node_cost
+            self.came_from[new_node] = node # 更新父节点
+            self.path_cost[new_node] = new_node_cost # 更新路径代价
 
     def output(self):
         """输出求解结果"""
@@ -256,6 +256,7 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.depth。
         """
         if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+            # 与BaseSearch几乎相同，但是需要记录节点的深度
             self.frontier.push(new_node)
             self.came_from[new_node] = node
             self.path_cost[new_node] = new_node_cost
@@ -280,6 +281,7 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
                 Note:
                     可参考课程note中的代码。
                 """
+                # 未达到深度限制之前和BaseSearch的操作相同
                 self.explored.append(node)
                 for new_node, new_node_cost in zip(*self.expand(node)):
                     self.process_new_node(node, new_node, new_node_cost)
@@ -317,6 +319,7 @@ class UniformCostSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
+        # ucs的前沿集合是用优先队列实现的，节点的值为路径代价
         if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
             self.frontier.push(new_node, new_node_cost)
             self.came_from[new_node] = node
