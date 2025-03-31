@@ -150,7 +150,7 @@ class BaseSearch:
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]: # 若节点没有被探索过，或者新的代价比较小，则将节点加入前沿集合
+        if new_node not in self.explored and new_node not in self.frontier.frontier: # 若节点没有被探索过，或者新的代价比较小，则将节点加入前沿集合
             self.frontier.push(new_node)
             self.came_from[new_node] = node # 更新父节点
             self.path_cost[new_node] = new_node_cost # 更新路径代价
@@ -162,7 +162,7 @@ class BaseSearch:
             self.backtrack()  # 从目标节点开始回溯路径上的节点
             print('Total length:{}.'.format(len(self.path)))
             self.print_solution()  # 输出具体路径
-            self.draw_solution()  # 可视化迷宫问题的解
+            # self.draw_solution()  # 可视化迷宫问题的解
         else:
             print('No solution!')  # 未找到可行路径
 
@@ -255,7 +255,7 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.depth。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+        if new_node not in self.explored and new_node not in self.frontier.frontier:
             # 与BaseSearch几乎相同，但是需要记录节点的深度
             self.frontier.push(new_node)
             self.came_from[new_node] = node
