@@ -163,7 +163,7 @@ class BaseSearch:
             self.backtrack()  # 从目标节点开始回溯路径上的节点
             print('Total length:{}.'.format(len(self.path)))
             self.print_solution()  # 输出具体路径
-            # self.draw_solution()  # 可视化迷宫问题的解
+            self.draw_solution()  # 可视化迷宫问题的解
         else:
             print('No solution!')  # 未找到可行路径
 
