@@ -106,7 +106,7 @@ class BaseSearch:
         for action, action_cost in zip(self.actions, self.actions_costs):  # 按顺序执行动作，获取新节点的位置
             new_row = node[0] + action[0]
             new_col = node[1] + action[1]
-            new_node_cost = self.path_cost[node] + action_cost
+            new_node_cost = action_cost
             if self.check_row_col(new_row, new_col):  # 如果位置合法则加入新节点集合
                 new_node = (new_row, new_col)
                 new_nodes.append(new_node)
@@ -150,10 +150,11 @@ class BaseSearch:
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]: # 若节点没有被探索过，或者新的代价比较小，则将节点加入前沿集合
+        new_cost = new_node_cost + self.path_cost[node]
+        if not new_node in self.explored or new_cost < self.path_cost[new_node]: # 若节点没有被探索过，或者新的代价比较小，则将节点加入前沿集合
             self.frontier.push(new_node)
             self.came_from[new_node] = node # 更新父节点
-            self.path_cost[new_node] = new_node_cost # 更新路径代价
+            self.path_cost[new_node] = new_cost # 更新路径代价
 
     def output(self):
         """输出求解结果"""
@@ -162,7 +163,7 @@ class BaseSearch:
             self.backtrack()  # 从目标节点开始回溯路径上的节点
             print('Total length:{}.'.format(len(self.path)))
             self.print_solution()  # 输出具体路径
-            self.draw_solution()  # 可视化迷宫问题的解
+            # self.draw_solution()  # 可视化迷宫问题的解
         else:
             print('No solution!')  # 未找到可行路径
 
@@ -255,11 +256,12 @@ class IterativeDeepeningDepthFirstSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.depth。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
+        new_cost = new_node_cost + self.path_cost[node]
+        if not new_node in self.explored or new_cost < self.path_cost[new_node]:
             # 与BaseSearch几乎相同，但是需要记录节点的深度
             self.frontier.push(new_node)
             self.came_from[new_node] = node
-            self.path_cost[new_node] = new_node_cost
+            self.path_cost[new_node] = new_cost
             self.depth[new_node] = self.depth[node] + 1
 
     def plain_solve(self, depth_limit):
@@ -320,10 +322,11 @@ class UniformCostSearch(BaseSearch):
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost。
         """
         # ucs的前沿集合是用优先队列实现的，节点的值为路径代价
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
-            self.frontier.push(new_node, new_node_cost)
+        new_cost = new_node_cost + self.path_cost[node]
+        if not new_node in self.explored or new_cost < self.path_cost[new_node]:
+            self.frontier.push(new_node, new_cost)
             self.came_from[new_node] = node
-            self.path_cost[new_node] = new_node_cost
+            self.path_cost[new_node] = new_cost
 
 
 class AStarSearch(BaseSearch):
@@ -351,10 +354,11 @@ class AStarSearch(BaseSearch):
         Note:
             可参考课程note中的代码，需要处理self.frontier、self.came_from、self.path_cost、self.astar_cost。
         """
-        if not new_node in self.explored or new_node_cost < self.path_cost[new_node]:
-            self.frontier.push(new_node, new_node_cost + self.heuristic_func(new_node))
+        new_cost = new_node_cost + self.path_cost[node]
+        if not new_node in self.explored or new_cost < self.path_cost[new_node]:
+            self.frontier.push(new_node, new_cost + self.heuristic_func(new_node))
             self.came_from[new_node] = node
-            self.path_cost[new_node] = new_node_cost
+            self.path_cost[new_node] = new_cost
 
     def heuristic_func(self, node):
         """
